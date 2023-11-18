@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ProjektSMB</string>
+    <string name="title_activity_input_name">InputNameActivity</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="title_activity_add_parent">AddParent</string>
+    <string name="title_activity_child">ChildActivity</string>
+    <string name="title_activity_add_child">AddChildActivity</string>
+    <string name="title_activity_account_settings">AccountSettingsActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+</resources>
