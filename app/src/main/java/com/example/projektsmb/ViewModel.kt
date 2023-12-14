@@ -7,10 +7,42 @@ import androidx.lifecycle.viewModelScope
 import com.example.projektsmb.Data.Child
 import com.example.projektsmb.Data.ChildRepository
 import com.example.projektsmb.Data.Parent
+import com.example.projektsmb.Data.ParentDb
 import com.example.projektsmb.Data.Repository
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+
+class ViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val repository :Repository
+    var firebaseDatabase : FirebaseDatabase
+    val parents : StateFlow<HashMap<String, Parent>>
+
+    init{
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        repository = Repository(firebaseDatabase)
+        parents = repository.allProducts
+    }
+
+    fun addParent(parent: Parent){
+        viewModelScope.launch { repository.insert(parent) }
+    }
+
+    fun deleteParent(parent : Parent)
+    {
+        viewModelScope.launch { repository.delete(parent) }
+    }
+
+}
+
+
+
+
+
+/*
 class ViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repo = Repository(app.applicationContext)
@@ -23,7 +55,7 @@ class ViewModel(app: Application) : AndroidViewModel(app) {
 
     fun addParent(parent: Parent)
     {
-        viewModelScope.launch { repo.insert(parent) }
+        viewModelScope.launch { repo.fbInsert(parent) }
     }
 
     fun deleteParent(parent: Parent)
@@ -50,4 +82,5 @@ class ViewModel(app: Application) : AndroidViewModel(app) {
     {
         viewModelScope.launch { childRepo.update(child) }
     }
-}
+
+ */

@@ -50,8 +50,8 @@ class AddChildActivity : ComponentActivity() {
                 SetSystemBarColor(color = Color(android.graphics.Color.parseColor("#200036")))
                 var sharedPrefs = getSharedPreferences("def_prefs", MODE_PRIVATE)
                 var fontDefault = sharedPrefs.getFloat("fontDefault", 1f)
-                val viewModel by viewModels<ViewModel>()
-                var id = intent.extras?.getInt("parentId")
+                var id = intent.extras?.getString("parentId")
+                val viewModel by viewModels<ChildViewModel>()
                 var listName = intent.extras?.getString("name")
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -125,11 +125,17 @@ class AddChildActivity : ComponentActivity() {
                                     ) {}
 
                                     Button(onClick = {
-                                        var children = Child(productName = productName.text, price = price.text.toDouble(), quantity = quantity.text.toInt(), bought = false, parentId = id!!)
+                                        var children = Child(id = "0",productName = productName.text, price = price.text.toDouble(), quantity = quantity.text, bought = false, parentId = id!!)
                                         viewModel.addChild(children)
                                         val intent = Intent(applicationContext, ChildActivity::class.java)
                                         intent.putExtra("parentId", id)
                                         intent.putExtra("name", listName)
+
+                                        val notification = Intent()
+                                        notification.putExtra("product", productName.text)
+                                        notification.setAction("com.example.projektsmbreceiver")
+                                        notification.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES)
+                                        applicationContext.sendBroadcast(notification)
                                         onBackPressed()
                                     },
                                         modifier = Modifier

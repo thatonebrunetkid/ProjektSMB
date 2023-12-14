@@ -1,45 +1,110 @@
 package com.example.projektsmb.Data
 
 import android.content.Context
+import androidx.activity.ComponentActivity
+import androidx.room.Dao
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.database
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 
-class Repository(context: Context) : ParentDao {
+class Repository(private val firebaseDatabase: FirebaseDatabase) {
 
-    private val dao = ParentDb.getInstance(context).parentDao()
+    val allProducts = MutableStateFlow(HashMap<String, Parent>())
+    var auth = FirebaseAuth.getInstance()
+    private val path = "${auth.currentUser!!.uid}/parents"
 
-    override suspend fun insert(parent: Parent) = withContext(Dispatchers.IO) {
-       dao.insert(parent)
+    init{
+        firebaseDatabase.getReference(path).addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val parent = Parent(
+                    id = snapshot.ref.key as String,
+                    ListName = snapshot.child("listName").value as String
+                )
+                allProducts.value = allProducts.value.toMutableMap().apply {
+                    put(parent.id, parent)
+                }as HashMap<String, Parent>
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                val parent = Parent(
+                    id = snapshot.ref.key as String,
+                    ListName = snapshot.child("listName").value as String
+                )
+
+                allProducts.value = allProducts.value.toMutableMap().apply {
+                    put(parent.id, parent)
+                } as HashMap<String, Parent>
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                val parent = Parent(
+                    id = snapshot.ref.key as String,
+                    ListName = snapshot.child("listName").value as String
+                )
+
+                allProducts.value = allProducts.value.toMutableMap().apply {
+                    put(parent.id, parent)
+                } as HashMap<String, Parent>
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                val parent = Parent(
+                    id = snapshot.ref.key as String,
+                    ListName = snapshot.child("listName").value as String
+                )
+
+                allProducts.value = allProducts.value.toMutableMap().apply {
+                    put(parent.id, parent)
+                } as HashMap<String, Parent>
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
     }
 
-    override suspend fun delete(parent: Parent) = withContext(Dispatchers.IO) {
-        dao.delete(parent)
+    suspend fun insert(parent: Parent)
+    {
+        firebaseDatabase.getReference(path).push().also {
+            parent.id = it.ref.key!!
+            it.setValue(parent)
+        }
     }
 
-    override fun selectAll(): Flow<List<Parent>> {
-       return dao.selectAll()
-    }
-}
-
-class ChildRepository(context: Context) : ChildDao{
-
-    private val childDao = ParentDb.getInstance(context).childDao()
-
-    override suspend fun insert(child: Child) = withContext(Dispatchers.IO){
-        childDao.insert(child)
+    suspend fun delete(parent: Parent)
+    {
+        firebaseDatabase.getReference("$path/${parent.id}").removeValue()
     }
 
-    override suspend fun delete(child: Child) = withContext(Dispatchers.IO) {
-        childDao.delete(child)
+
+
+
+
+
+    /*
+    suspend fun insert(parent : Parent)
+    {
+        val key = database.child(auth.currentUser!!.uid).push().key
+        database.child(auth.currentUser!!.uid).child("parents").child(key!!).setValue(parent.ListName)
     }
 
-    override fun getAll(pId: Int): Flow<List<Child>> {
-        return childDao.getAll(pId)
-    }
+     */
 
-    override suspend fun update(child: Child) = withContext(Dispatchers.IO) {
-        childDao.update(child)
-    }
+
+
+
+
 
 }

@@ -96,7 +96,7 @@ class AddParent : ComponentActivity() {
                                    modifier = Modifier.padding(top = 20.dp))
 
                                Button(onClick = {
-                                   val parent = Parent(ListName = name.text)
+                                   val parent = Parent(id = "0", ListName = name.text)
                                    val viewModel by viewModels<ViewModel>()
                                    viewModel.addParent(parent)
                                    val intent = Intent(applicationContext, DashboardActivity::class.java)

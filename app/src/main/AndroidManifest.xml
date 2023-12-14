@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +16,11 @@
         android:theme="@style/Theme.ProjektSMB"
         tools:targetApi="31">
         <activity
+            android:name=".AuthorizationActivity"
+            android:exported="false"
+            android:label="@string/title_activity_authorization"
+            android:theme="@style/Theme.ProjektSMB" />
+        <activity
             android:name=".SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings"
@@ -26,12 +32,12 @@
             android:theme="@style/Theme.ProjektSMB" />
         <activity
             android:name=".AddChildActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_add_child"
             android:theme="@style/Theme.ProjektSMB" />
         <activity
             android:name=".ChildActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_child"
             android:theme="@style/Theme.ProjektSMB" />
         <activity

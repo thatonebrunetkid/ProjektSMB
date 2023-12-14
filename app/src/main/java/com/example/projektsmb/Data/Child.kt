@@ -5,11 +5,11 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "Child")
 data class Child(
-    @PrimaryKey(autoGenerate = true)val id : Int = 0,
+    @PrimaryKey var id : String,
     val productName : String,
     val price : Double,
-    val quantity : Int,
+    val quantity : String,
     var bought : Boolean = false,
-    val parentId : Int
+    val parentId : String
 
 )

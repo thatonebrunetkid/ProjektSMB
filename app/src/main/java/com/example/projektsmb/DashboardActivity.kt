@@ -62,7 +62,7 @@ class DashboardActivity : ComponentActivity() {
             ProjektSMBTheme {
                 SetSystemBarColor(color = Color(android.graphics.Color.parseColor("#200036")))
                 val viewModel by viewModels<ViewModel>()
-                val parents by viewModel.getAllParents().collectAsState(emptyList())
+                val parents by viewModel.parents.collectAsState(emptyMap<String, Parent>())
                 var sharedPrefs = getSharedPreferences("def_prefs", MODE_PRIVATE)
                 var fontDefault = sharedPrefs.getFloat("fontDefault", 1f)
 
@@ -192,26 +192,26 @@ class DashboardActivity : ComponentActivity() {
                                     modifier = Modifier.fillMaxSize(),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    items(parents){parent ->
+                                    items(parents.toList()){parent ->
                                         Row {
                                             Button(onClick = {
                                                 val intent = Intent(applicationContext, ChildActivity::class.java)
-                                                intent.putExtra("id", parent.id)
-                                                intent.putExtra("name", parent.ListName)
+                                                intent.putExtra("id", parent.second.id)
+                                                intent.putExtra("name", parent.second.ListName)
                                                 startActivity(intent)
                                             },
                                                 colors = ButtonDefaults.outlinedButtonColors(Color.Transparent),
                                                 modifier = Modifier
                                                     .padding(end = 10.dp)
                                             ) {
-                                                Text(text = parent.ListName, fontSize = (25 * fontDefault).sp, color = Color.Black)
+                                                Text(text = parent.second.ListName!!, fontSize = (25 * fontDefault).sp, color = Color.Black)
                                             }
                                             Column(
                                                 modifier = Modifier.fillMaxSize(),
                                                 horizontalAlignment = Alignment.End
                                             ) {
                                                 Button(onClick = {
-                                                    viewModel.deleteParent(parent)
+                                                    viewModel.deleteParent(parent.second)
                                                 },
                                                     colors = ButtonDefaults.outlinedButtonColors(Color.Transparent),
                                                     modifier = Modifier
@@ -228,8 +228,6 @@ class DashboardActivity : ComponentActivity() {
                                         }
                                     }
                                 }
-
-
                             }
                         }
                     }

@@ -56,13 +56,15 @@ class MainActivity : ComponentActivity() {
                         editor.putFloat("fontDefault", 1f)
                         editor.commit()
                         Handler().postDelayed({
-                            val intent = Intent(applicationContext, InputNameActivity::class.java)
+                            val intent = Intent(applicationContext, AuthorizationActivity::class.java)
+                            intent.putExtra("Registered", "No")
                             startActivity(intent)
                         }, 4000)
                     }else
                     {
                         Handler().postDelayed({
-                            val intent = Intent(applicationContext, DashboardActivity::class.java)
+                            val intent = Intent(applicationContext, AuthorizationActivity::class.java)
+                            intent.putExtra("Registered", "Yes")
                             startActivity(intent)
                         }, 4000)
                     }

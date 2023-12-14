@@ -60,8 +60,8 @@ class ChildActivity : ComponentActivity() {
                 SetSystemBarColor(color = Color(android.graphics.Color.parseColor("#200036")))
                 val viewModel by viewModels<ViewModel>()
                 var listName = intent.extras?.getString("name")
-                var id = intent.extras?.getInt("id")
-                val children by viewModel.getAllChilds(id!!).collectAsState(emptyList())
+                var id = intent.extras?.getString("id")
+                //val children by viewModel.getAllChilds(id!!).collectAsState(emptyList())
                 var sharedPrefs = getSharedPreferences("def_prefs", MODE_PRIVATE)
                 var fontDefault = sharedPrefs.getFloat("fontDefault", 1f)
 
@@ -105,6 +105,7 @@ class ChildActivity : ComponentActivity() {
                                    horizontalAlignment = Alignment.CenterHorizontally
                                )
                                {
+                                   /*
                                  items(children){
                                      children ->
                                      Column {
@@ -113,6 +114,7 @@ class ChildActivity : ComponentActivity() {
                                         }
                                      }
                                  }
+                                    */
                                }
 
                                Column(modifier = Modifier.padding(all = 50.dp)) {
@@ -207,7 +209,7 @@ fun CustomizePresentationRow(children : Child, viewModel: ViewModel, fontDefault
                Checkbox(checked = checkboxValue, onCheckedChange = {
                    checkboxValue = it
                    children.bought = checkboxValue
-                   viewModel.updateChild(children)
+                   //viewModel.updateChild(children)
                }
                )
 
@@ -215,7 +217,7 @@ fun CustomizePresentationRow(children : Child, viewModel: ViewModel, fontDefault
                   horizontalArrangement = Arrangement.End
                ) {
                    Button(onClick = {
-                       viewModel.deleteChild(children)
+                       //viewModel.deleteChild(children)
                    },
                        colors = ButtonDefaults.outlinedButtonColors(Color.Transparent)
                    ) {
