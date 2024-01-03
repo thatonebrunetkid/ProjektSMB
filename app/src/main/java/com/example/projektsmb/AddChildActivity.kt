@@ -51,6 +51,9 @@ class AddChildActivity : ComponentActivity() {
                 var sharedPrefs = getSharedPreferences("def_prefs", MODE_PRIVATE)
                 var fontDefault = sharedPrefs.getFloat("fontDefault", 1f)
                 var id = intent.extras?.getString("parentId")
+                val editor = sharedPrefs.edit()
+                editor.putString("parentId", id.toString())
+                editor.commit()
                 val viewModel by viewModels<ChildViewModel>()
                 var listName = intent.extras?.getString("name")
                 Surface(
@@ -125,7 +128,7 @@ class AddChildActivity : ComponentActivity() {
                                     ) {}
 
                                     Button(onClick = {
-                                        var children = Child(id = "0",productName = productName.text, price = price.text.toDouble(), quantity = quantity.text, bought = false, parentId = id!!)
+                                        var children = Child(id = "0",productName = productName.text, price = price.text, quantity = quantity.text, bought = false, parentId = id!!)
                                         viewModel.addChild(children)
                                         val intent = Intent(applicationContext, ChildActivity::class.java)
                                         intent.putExtra("parentId", id)

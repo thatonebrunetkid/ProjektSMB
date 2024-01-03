@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class Child(
     @PrimaryKey var id : String,
     val productName : String,
-    val price : Double,
+    val price : String,
     val quantity : String,
     var bought : Boolean = false,
     val parentId : String

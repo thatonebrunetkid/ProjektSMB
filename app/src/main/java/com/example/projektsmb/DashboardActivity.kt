@@ -198,6 +198,9 @@ class DashboardActivity : ComponentActivity() {
                                                 val intent = Intent(applicationContext, ChildActivity::class.java)
                                                 intent.putExtra("id", parent.second.id)
                                                 intent.putExtra("name", parent.second.ListName)
+                                                val editor = sharedPrefs.edit()
+                                                editor.putString("parentId", parent.second.id)
+                                                editor.commit()
                                                 startActivity(intent)
                                             },
                                                 colors = ButtonDefaults.outlinedButtonColors(Color.Transparent),

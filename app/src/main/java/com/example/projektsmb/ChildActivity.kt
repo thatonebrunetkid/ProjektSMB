@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -58,10 +59,10 @@ class ChildActivity : ComponentActivity() {
         setContent {
             ProjektSMBTheme {
                 SetSystemBarColor(color = Color(android.graphics.Color.parseColor("#200036")))
-                val viewModel by viewModels<ViewModel>()
                 var listName = intent.extras?.getString("name")
                 var id = intent.extras?.getString("id")
-                //val children by viewModel.getAllChilds(id!!).collectAsState(emptyList())
+                val viewModel by viewModels<ChildViewModel>()
+                val children by viewModel.children.collectAsState(emptyMap<String, Child>())
                 var sharedPrefs = getSharedPreferences("def_prefs", MODE_PRIVATE)
                 var fontDefault = sharedPrefs.getFloat("fontDefault", 1f)
 
@@ -105,16 +106,89 @@ class ChildActivity : ComponentActivity() {
                                    horizontalAlignment = Alignment.CenterHorizontally
                                )
                                {
-                                   /*
-                                 items(children){
+                                 items(children.toList()){
                                      children ->
                                      Column {
                                         Row {
-                                            CustomizePresentationRow(children = children, viewModel, fontDefault)
+                                            Row (
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(top = 30.dp)
+                                            ){
+                                                Icon(
+                                                    Icons.Rounded.ShoppingCart,
+                                                    contentDescription = "productRow",
+                                                    tint = Color(android.graphics.Color.parseColor("#f76a54")),
+                                                    modifier = Modifier.padding(start = 30.dp)
+                                                )
+                                                Column {
+                                                    Row {
+                                                        Text(text = children.second.productName,
+                                                            fontSize = (25 * fontDefault).sp,
+                                                            style = MaterialTheme.typography.bodyLarge,
+                                                            color = Color.Black,
+                                                            fontWeight = FontWeight.Bold,
+                                                            modifier = Modifier.padding(start = 30.dp)
+                                                        )
+                                                        Text(text = " x " + children.second.quantity.toString(),
+                                                            fontSize = (25 * fontDefault).sp,
+                                                            style = MaterialTheme.typography.bodyLarge,
+                                                            color = Color.Black,
+                                                            fontWeight = FontWeight.Bold
+                                                        )
+                                                    }
+
+                                                    Row {
+                                                        Text(text = children.second.price.toString() + " PLN",
+                                                            fontSize = (18 * fontDefault).sp,
+                                                            style = MaterialTheme.typography.bodyLarge,
+                                                            color = Color.LightGray,
+                                                            modifier = Modifier.padding(start = 30.dp)
+                                                        )
+                                                    }
+                                                }
+
+                                                Column(
+                                                    modifier = Modifier.fillMaxSize(),
+                                                    horizontalAlignment = Alignment.End
+                                                ){
+                                                    Row(
+                                                        horizontalArrangement = Arrangement.End
+                                                    ) {
+                                                        var checkboxValue by remember { mutableStateOf(children.second.bought) }
+                                                        Checkbox(checked = checkboxValue, onCheckedChange = {
+                                                            checkboxValue = it
+                                                            children.second.bought = checkboxValue
+                                                            //viewModel.updateChild(children)
+                                                        }
+                                                        )
+
+                                                        Row(
+                                                            horizontalArrangement = Arrangement.End
+                                                        ) {
+                                                            Button(onClick = {
+                                                                viewModel.deleteChildren(children.second)
+                                                            },
+                                                                colors = ButtonDefaults.outlinedButtonColors(Color.Transparent)
+                                                            ) {
+                                                                Icon(
+                                                                    Icons.Default.Close,
+                                                                    contentDescription = "delete child",
+                                                                    tint = Color.Red
+                                                                )
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+
+
+
+                                            }
                                         }
                                      }
                                  }
-                                    */
                                }
 
                                Column(modifier = Modifier.padding(all = 50.dp)) {
@@ -146,6 +220,31 @@ class ChildActivity : ComponentActivity() {
                                                 tint = Color(android.graphics.Color.parseColor("#f76a54"))
                                             )
                                     }
+
+                                   Button(onClick = {
+
+
+
+
+
+                                                    intent = Intent(applicationContext, AddToMapActivity::class.java)
+                                       intent.putExtra("name", listName)
+                                       startActivity(intent)
+                                   },
+                                       colors = ButtonDefaults.outlinedButtonColors(Color(android.graphics.Color.parseColor("#200036"))),
+                                       shape = CircleShape,
+                                       contentPadding = PaddingValues(0.dp),
+                                       modifier = Modifier
+                                           .size(80.dp)
+                                           .align(Alignment.End)
+                                           .padding(all = 10.dp)
+                                       ) {
+                                       Icon(
+                                           Icons.Default.LocationOn,
+                                           contentDescription = "AddToMap",
+                                           tint = Color(android.graphics.Color.parseColor("#f76a54"))
+                                       )
+                                   }
                                }
                            }
                        }
@@ -157,7 +256,7 @@ class ChildActivity : ComponentActivity() {
 }
 
 @Composable
-fun CustomizePresentationRow(children : Child, viewModel: ViewModel, fontDefault : Float)
+fun CustomizePresentationRow(children : Child, viewModel: ChildViewModel, fontDefault : Float)
 {
     Row (
         verticalAlignment = Alignment.CenterVertically,
@@ -217,7 +316,7 @@ fun CustomizePresentationRow(children : Child, viewModel: ViewModel, fontDefault
                   horizontalArrangement = Arrangement.End
                ) {
                    Button(onClick = {
-                       //viewModel.deleteChild(children)
+                       viewModel.deleteChildren(children)
                    },
                        colors = ButtonDefaults.outlinedButtonColors(Color.Transparent)
                    ) {

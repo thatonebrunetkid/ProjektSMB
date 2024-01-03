@@ -8,4 +8,5 @@
     <string name="title_activity_account_settings">AccountSettingsActivity</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_authorization">AuthorizationActivity</string>
+    <string name="title_activity_add_to_map">AddToMapActivity</string>
 </resources>

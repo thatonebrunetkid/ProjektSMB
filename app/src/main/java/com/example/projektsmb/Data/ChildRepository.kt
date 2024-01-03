@@ -11,7 +11,7 @@ class ChildRepository(private val firebaseDatabase: FirebaseDatabase, parentId :
 
     val allChildren = MutableStateFlow(HashMap<String, Child>())
     var auth = FirebaseAuth.getInstance()
-    private val path = "${auth.currentUser!!.uid}/parents/$parentId"
+    private val path = "${auth.currentUser!!.uid}/parents/$parentId/child"
 
     init{
         firebaseDatabase.getReference(path).addChildEventListener(object : ChildEventListener{
@@ -19,7 +19,7 @@ class ChildRepository(private val firebaseDatabase: FirebaseDatabase, parentId :
                 val child = Child(
                     id = snapshot.ref.key as String,
                     productName = snapshot.child("productName").value as String,
-                    price = snapshot.child("price").value as Double,
+                    price = snapshot.child("price").value as String,
                     quantity = snapshot.child("quantity").value as String,
                     bought = snapshot.child("bought").value as Boolean,
                     parentId = snapshot.child("parentId").value as String
@@ -34,7 +34,7 @@ class ChildRepository(private val firebaseDatabase: FirebaseDatabase, parentId :
                 val child = Child(
                     id = snapshot.ref.key as String,
                     productName = snapshot.child("productName").value as String,
-                    price = snapshot.child("price").value as Double,
+                    price = snapshot.child("price").value as String,
                     quantity = snapshot.child("quantity").value as String,
                     bought = snapshot.child("bought").value as Boolean,
                     parentId = snapshot.child("parentId").value as String
@@ -49,14 +49,13 @@ class ChildRepository(private val firebaseDatabase: FirebaseDatabase, parentId :
                 val child = Child(
                     id = snapshot.ref.key as String,
                     productName = snapshot.child("productName").value as String,
-                    price = snapshot.child("price").value as Double,
+                    price = snapshot.child("price").value as String,
                     quantity = snapshot.child("quantity").value as String,
                     bought = snapshot.child("bought").value as Boolean,
                     parentId = snapshot.child("parentId").value as String
                 )
-
                 allChildren.value = allChildren.value.toMutableMap().apply {
-                    put(child.id, child)
+                    remove(child.id, child)
                 }as HashMap<String, Child>
             }
 
@@ -64,7 +63,7 @@ class ChildRepository(private val firebaseDatabase: FirebaseDatabase, parentId :
                 val child = Child(
                     id = snapshot.ref.key as String,
                     productName = snapshot.child("productName").value as String,
-                    price = snapshot.child("price").value as Double,
+                    price = snapshot.child("price").value as String,
                     quantity = snapshot.child("quantity").value as String,
                     bought = snapshot.child("bought").value as Boolean,
                     parentId = snapshot.child("parentId").value as String

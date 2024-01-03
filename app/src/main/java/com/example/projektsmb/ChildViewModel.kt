@@ -1,6 +1,9 @@
 package com.example.projektsmb
 
 import android.app.Application
+import android.content.ContextWrapper
+import android.content.SharedPreferences
+import androidx.activity.ComponentActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -10,15 +13,18 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class ChildViewModel(application: Application, parentId : String) : AndroidViewModel(application) {
+class ChildViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository : ChildRepository
     var firebaseDatabase : FirebaseDatabase
     val children : StateFlow<HashMap<String, Child>>
+    var sharedPrefs : SharedPreferences
+
 
     init{
+        sharedPrefs = application.getSharedPreferences("def_prefs", ComponentActivity.MODE_PRIVATE)
         firebaseDatabase = FirebaseDatabase.getInstance()
-        repository = ChildRepository(firebaseDatabase, parentId)
+        repository = ChildRepository(firebaseDatabase, sharedPrefs.getString("parentId", "")!!)
         children = repository.allChildren
     }
     fun addChild(child: Child)

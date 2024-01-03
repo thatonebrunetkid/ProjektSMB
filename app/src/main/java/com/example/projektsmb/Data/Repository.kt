@@ -54,7 +54,7 @@ class Repository(private val firebaseDatabase: FirebaseDatabase) {
                 )
 
                 allProducts.value = allProducts.value.toMutableMap().apply {
-                    put(parent.id, parent)
+                    remove(parent.id, parent)
                 } as HashMap<String, Parent>
             }
 
