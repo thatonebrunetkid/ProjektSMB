@@ -5,23 +5,25 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Parent::class, Child::class], version = 1)
-abstract class Database : RoomDatabase() {
-    abstract fun parentDao() : ParentDao
-    abstract fun childDao() : ChildDao
+@Database(entities = [LocationData::class], version = 1)
+public abstract class LocationDb : RoomDatabase() {
+    abstract fun locationDataDao() : LocationDataDao
 
-}
+    companion object{
+        private var instance : LocationDb? = null
 
-object ParentDb{
-    private var db: com.example.projektsmb.Data.Database ? = null
+        fun getDatabase(context: Context) : LocationDb{
+            if(instance != null){
+                return instance as LocationDb
+            }
 
+            instance = Room.databaseBuilder(
+                context.applicationContext,
+                LocationDb::class.java,
+                "Database"
+            ).allowMainThreadQueries().build()
 
-    fun getInstance(context: Context): com.example.projektsmb.Data.Database {
-        if(db == null)
-        {
-            db = Room.databaseBuilder(context, com.example.projektsmb.Data.Database::class.java, "database")
-                .build()
+            return instance as LocationDb
         }
-        return db!!
     }
 }

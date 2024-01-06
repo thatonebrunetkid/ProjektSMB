@@ -128,7 +128,7 @@ class InputNameActivity : ComponentActivity() {
                                 var text by remember { mutableStateOf(TextFieldValue("")) }
                                 OutlinedTextField(
                                     value = text,
-                                    colors = TextFieldDefaults.textFieldColors(textColor = Color.Black, containerColor = Color.Transparent),
+                                    colors = TextFieldDefaults.colors(focusedTextColor = Color.Black, focusedContainerColor = Color.Transparent),
                                     onValueChange = {
                                         text = it
                                     },

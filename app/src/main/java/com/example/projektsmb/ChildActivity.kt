@@ -1,5 +1,8 @@
 package com.example.projektsmb
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -47,6 +50,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
 import com.example.projektsmb.Data.Child
 import com.example.projektsmb.ui.theme.ProjektSMBTheme
 import java.math.BigDecimal
@@ -222,14 +226,7 @@ class ChildActivity : ComponentActivity() {
                                     }
 
                                    Button(onClick = {
-
-
-
-
-
-                                                    intent = Intent(applicationContext, AddToMapActivity::class.java)
-                                       intent.putExtra("name", listName)
-                                       startActivity(intent)
+                                                    openMapActivity(applicationContext, listName!!);
                                    },
                                        colors = ButtonDefaults.outlinedButtonColors(Color(android.graphics.Color.parseColor("#200036"))),
                                        shape = CircleShape,
@@ -251,6 +248,36 @@ class ChildActivity : ComponentActivity() {
                     }
                 }
             }
+        }
+    }
+
+
+
+
+    private fun openMapActivity(context: Context, name:String)
+    {
+        //check permissions
+        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 22)
+        }
+
+        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED
+        )
+        {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION), 22)
+        }
+
+        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
+        )
+        {
+           val intent = Intent(context, AddToMapActivity::class.java)
+            intent.putExtra("name", name)
+            startActivity(intent)
         }
     }
 }
@@ -329,9 +356,6 @@ fun CustomizePresentationRow(children : Child, viewModel: ChildViewModel, fontDe
                }
            }
         }
-
-
-
-
     }
 }
+

@@ -91,7 +91,7 @@ class AddParent : ComponentActivity() {
                                OutlinedTextField(
                                    value = name,
                                    onValueChange = {name = it},
-                                   colors = TextFieldDefaults.textFieldColors(textColor = Color.Black, containerColor = Color.Transparent),
+                                   colors = TextFieldDefaults.colors(focusedTextColor = Color.Black, focusedContainerColor = Color.Transparent),
                                    label = { Text(text = "Name")},
                                    modifier = Modifier.padding(top = 20.dp))
 

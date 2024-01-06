@@ -99,7 +99,7 @@ class AddChildActivity : ComponentActivity() {
                                     OutlinedTextField(
                                         value = productName,
                                         onValueChange = {productName = it},
-                                        colors = TextFieldDefaults.textFieldColors(textColor = Color.Black, containerColor = Color.Transparent),
+                                        colors = TextFieldDefaults.colors(focusedTextColor = Color.Black, focusedContainerColor = Color.Transparent),
                                         label = { Text(text = "Product Name")},
                                         modifier = Modifier.padding(top = 20.dp)
                                     )
@@ -107,7 +107,7 @@ class AddChildActivity : ComponentActivity() {
                                     var price by remember{ mutableStateOf(TextFieldValue("")) }
                                     OutlinedTextField(value = price,
                                         onValueChange = {price = it},
-                                        colors = TextFieldDefaults.textFieldColors(textColor = Color.Black, containerColor = Color.Transparent),
+                                        colors = TextFieldDefaults.colors(focusedTextColor = Color.Black, focusedContainerColor = Color.Transparent),
                                         label = { Text(text = "Price")},
                                         modifier = Modifier.padding(top = 20.dp),
                                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
@@ -116,7 +116,7 @@ class AddChildActivity : ComponentActivity() {
                                     var quantity by remember{ mutableStateOf(TextFieldValue("")) }
                                     OutlinedTextField(value = quantity,
                                         onValueChange = {quantity = it},
-                                        colors = TextFieldDefaults.textFieldColors(textColor = Color.Black, containerColor = Color.Transparent),
+                                        colors = TextFieldDefaults.colors(focusedTextColor = Color.Black, focusedContainerColor = Color.Transparent),
                                         label = { Text(text = "Quantity")},
                                         modifier = Modifier.padding(top = 20.dp),
                                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)

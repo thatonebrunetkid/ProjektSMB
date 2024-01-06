@@ -81,7 +81,7 @@ class AccountSettingsActivity : ComponentActivity() {
                                var textFieldName by remember { mutableStateOf(name) }
                                OutlinedTextField(
                                    value = textFieldName!!,
-                                   colors = TextFieldDefaults.textFieldColors(textColor = Color.Black, containerColor = Color.Transparent),
+                                   colors = TextFieldDefaults.colors(focusedTextColor = Color.Black, focusedContainerColor = Color.Transparent),
                                    onValueChange = {
                                        textFieldName = it
                                    },

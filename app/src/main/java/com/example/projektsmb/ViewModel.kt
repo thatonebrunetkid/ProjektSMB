@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.projektsmb.Data.Child
 import com.example.projektsmb.Data.ChildRepository
 import com.example.projektsmb.Data.Parent
-import com.example.projektsmb.Data.ParentDb
 import com.example.projektsmb.Data.Repository
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.flow.Flow

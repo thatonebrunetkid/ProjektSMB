@@ -25,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -142,7 +143,7 @@ class DashboardActivity : ComponentActivity() {
                                     }
 
                                     Row(
-                                        modifier = Modifier.padding(15.dp)
+                                        modifier = Modifier.padding(10.dp)
                                     ){}
 
                                     Button(onClick = {
@@ -162,7 +163,7 @@ class DashboardActivity : ComponentActivity() {
                                     }
 
                                     Row(
-                                        modifier = Modifier.padding(15.dp)
+                                        modifier = Modifier.padding(10.dp)
                                     ){}
 
                                     Button(onClick = {
@@ -177,6 +178,27 @@ class DashboardActivity : ComponentActivity() {
                                         Icon(
                                             Icons.Default.Person,
                                             contentDescription = "Account information",
+                                            tint = Color(android.graphics.Color.parseColor("#f76a54"))
+                                        )
+                                    }
+
+                                    Row (
+                                        modifier = Modifier.padding(10.dp)
+                                    ){
+                                    }
+
+                                    Button(onClick ={
+                                        val intent = Intent(applicationContext, BigMapActivity::class.java)
+                                        startActivity(intent)
+                                    },
+                                        colors = ButtonDefaults.outlinedButtonColors(Color.LightGray),
+                                        shape = CircleShape,
+                                        contentPadding = PaddingValues(0.dp),
+                                        modifier = Modifier.size(80.dp)
+                                    ) {
+                                        Icon(
+                                            Icons.Filled.Place,
+                                            contentDescription = "Fav places",
                                             tint = Color(android.graphics.Color.parseColor("#f76a54"))
                                         )
                                     }
@@ -200,7 +222,7 @@ class DashboardActivity : ComponentActivity() {
                                                 intent.putExtra("name", parent.second.ListName)
                                                 val editor = sharedPrefs.edit()
                                                 editor.putString("parentId", parent.second.id)
-                                                editor.commit()
+                                                editor.apply()
                                                 startActivity(intent)
                                             },
                                                 colors = ButtonDefaults.outlinedButtonColors(Color.Transparent),

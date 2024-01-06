@@ -70,7 +70,7 @@ class AuthorizationActivity : ComponentActivity() {
                         OutlinedTextField(
                             value = username,
                             onValueChange = {username = it},
-                            colors = TextFieldDefaults.textFieldColors(textColor = Color.Black, containerColor = Color.Transparent),
+                            colors = TextFieldDefaults.colors(focusedTextColor = Color.Black, focusedContainerColor = Color.Transparent),
                             label = { Text(text = "Username")},
                             modifier = Modifier.padding(top = 20.dp)
                             )
@@ -79,7 +79,7 @@ class AuthorizationActivity : ComponentActivity() {
                         OutlinedTextField(
                             value = password,
                             onValueChange = {password = it},
-                            colors = TextFieldDefaults.textFieldColors(textColor = Color.Black, containerColor = Color.Transparent),
+                            colors = TextFieldDefaults.colors(focusedTextColor = Color.Black, focusedContainerColor = Color.Transparent),
                             label = { Text(text = "Password")},
                             modifier = Modifier.padding(top = 20.dp)
                         )
