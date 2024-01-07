@@ -44,7 +44,7 @@ class GeofenceReceiver : BroadcastReceiver() {
                 Log.i("geofence", "Polecenie enter")
                 var builder = NotificationCompat.Builder(context, notificationChannel.id)
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentTitle("Witamy w $shopName id: $id")
+                    .setContentTitle("Witamy w $shopName")
                     .setContentText("Lat: $lat Lng: $lng, sprawdź nowe promocje. Życzymy udanych zakupów")
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setAutoCancel(true)

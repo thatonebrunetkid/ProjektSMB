@@ -216,12 +216,12 @@ class AddToMapActivity : ComponentActivity() {
                 }.build()
 
                 val intent = Intent(applicationContext, GeofenceReceiver::class.java)
-                val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, Intent.FILL_IN_DATA or PendingIntent.FLAG_MUTABLE)
                 intent.putExtra("shopName", shopName)
                 intent.putExtra("lat", locationData.lat)
                 intent.putExtra("lng", locationData.lng)
                 intent.putExtra("id", locationData.id)
-                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, Intent.FILL_IN_SELECTOR or PendingIntent.FLAG_MUTABLE)
+
 
                 client.addGeofences(geofenceRequest, pendingIntent).run {
                     addOnSuccessListener {

@@ -3,6 +3,7 @@ package com.example.projektsmb
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Criteria
+import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -38,8 +39,7 @@ class BigMapActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-                    val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+                    val locationManager = getSystemService(ComponentActivity.LOCATION_SERVICE) as LocationManager
                     val criteria = Criteria()
                     criteria.isAltitudeRequired = true
                     criteria.accuracy = Criteria.ACCURACY_FINE
@@ -48,11 +48,10 @@ class BigMapActivity : ComponentActivity() {
                     var currentPosition : LatLng? = null
                     if(ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                         ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
-                    )
+                        ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
                     {
-                        val location = locationManager.getLastKnownLocation(provider.toString())!!
-                        currentPosition = LatLng(location.latitude, location.longitude)
+                        val location = locationManager.getLastKnownLocation(provider.toString())
+                        currentPosition = LatLng(location!!.latitude, location.longitude)
                     }
 
                     val cameraPositionState = rememberCameraPositionState{
@@ -62,24 +61,26 @@ class BigMapActivity : ComponentActivity() {
                     val viewModel by viewModels<LocationDataViewModel>()
                     val positionList = viewModel.allLocations.collectAsState(initial = emptyList())
 
-                    Column(modifier = Modifier.fillMaxSize()){
-                        GoogleMap (
+                    Column(modifier = Modifier.fillMaxSize())
+                    {
+                        GoogleMap(
                             modifier = Modifier.fillMaxSize(),
                             cameraPositionState = cameraPositionState
-                        ){
-                            positionList.value.forEach { e ->
-                                Marker(
-                                    state = MarkerState(position = LatLng(e.lat, e.lng)),
-                                    title = e.shopName
-                                )
+                        ) {
+                            if(positionList.value.isNotEmpty())
+                            {
+                                positionList.value.forEach{e ->
+                                    Marker(
+                                        state = MarkerState(position = LatLng(e.lat, e.lng)),
+                                        title = e.shopName
+                                    )
+                                }
                             }
-                        }
                         }
                     }
 
-
-
                 }
+            }
             }
         }
 

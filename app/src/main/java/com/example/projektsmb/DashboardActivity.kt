@@ -1,8 +1,10 @@
 package com.example.projektsmb
 
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -46,6 +48,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
 import com.example.projektsmb.Data.Parent
 import com.example.projektsmb.ui.theme.ProjektSMBTheme
 import compose.icons.AllIcons
@@ -188,8 +191,27 @@ class DashboardActivity : ComponentActivity() {
                                     }
 
                                     Button(onClick ={
-                                        val intent = Intent(applicationContext, BigMapActivity::class.java)
-                                        startActivity(intent)
+                                        if(ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                                        {
+                                            ActivityCompat.requestPermissions(this@DashboardActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), 22)
+                                        }
+
+                                        if(ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                                            ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                                            ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED
+                                            )
+                                        {
+                                            ActivityCompat.requestPermissions(this@DashboardActivity, arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION), 22)
+                                        }
+
+                                        if(ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                                            ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                                            ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED
+                                            )
+                                        {
+                                            val intent = Intent(applicationContext, BigMapActivity::class.java)
+                                            startActivity(intent)
+                                        }
                                     },
                                         colors = ButtonDefaults.outlinedButtonColors(Color.LightGray),
                                         shape = CircleShape,
